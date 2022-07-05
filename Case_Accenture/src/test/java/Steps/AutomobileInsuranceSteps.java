@@ -6,6 +6,8 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Random;
 
@@ -14,6 +16,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
+import io.cucumber.java.After;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Entao;
@@ -729,28 +732,33 @@ public class AutomobileInsuranceSteps {
 		// Encontrando e preenchendo o campo Comments
 		WebElement btnNext = Chrome.wait.until(ExpectedConditions.presenceOfElementLocated(By.id("sendemail")));
 		btnNext.click();
-		
+
 		Thread.sleep(5000);
 	}
 
 	@Entao("email e enviado")
-	public void emailEEnviado() {
-	   
-		// Capturando o a mensagem de sucesso
-		
-				WebElement abaQuote = Chrome.wait
-						.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/div[4]")));
-				
-				// Condição para verificar que ao clicar em Next, foi para a aba Send Quote
-				
-				
-				if (abaQuote.isDisplayed()) {
+	public void emailEEnviado() throws IOException {
 
-					System.out.println("E-Mail enviado com sucesso");
-				} else {
-					System.out.println("E-Mail não enviado!");
-					//Chrome.driver.close();
-				}
-	   
+		// Capturando o a mensagem de sucesso
+
+		WebElement abaQuote = Chrome.wait
+				.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/div[4]")));
+
+		// Condição para verificar que ao clicar em Next, foi para a aba Send Quote
+
+		if (abaQuote.isDisplayed()) {
+
+			System.out.println("E-Mail enviado com sucesso");
+
+			Chrome.driver.quit();
+			java.awt.Desktop.getDesktop().open(new File(
+					"C:\\Users\\User\\Git\\Desafio_Accenture\\Case_Accenture\\evidencia\\relatorio\\Relatorio.html"));
+			
+		} else {
+			System.out.println("E-Mail não enviado!");
+			 Chrome.driver.close();
+		}
+
 	}
+
 }
